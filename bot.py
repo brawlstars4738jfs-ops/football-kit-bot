@@ -7,14 +7,11 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 from google import genai
 from PIL import Image
-from dotenv import load_dotenv
 
-load_dotenv()
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "8914199912:AAFBrvVyfjBVbpA9PLPB8wpIZXeF-0k72xA")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AQ.Ab8RN6Im1jwDb6wm8oYrjJqdgTU_9C-I4s_dxXJwLdPz-a9Iww")
-
-MODEL = "gemini-2.5-flash-image-preview"
+MODEL = "gemini-3.1-flash-lite-image"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -46,6 +43,7 @@ async def start(message: Message):
         "а затем фотографию формы."
     )
 
+
 def generate(player_bytes, kit_bytes):
     player = Image.open(
         io.BytesIO(player_bytes)
@@ -65,6 +63,7 @@ def generate(player_bytes, kit_bytes):
             return part.inline_data.data
 
     raise RuntimeError("Gemini не вернул изображение")
+
 
 @dp.message(F.photo)
 async def handle_photo(message: Message):
@@ -115,6 +114,7 @@ async def handle_photo(message: Message):
             "и попробуй ещё раз."
         )
 
+
 @dp.message()
 async def other_messages(message: Message):
     await message.answer(
@@ -122,8 +122,10 @@ async def other_messages(message: Message):
         "и затем фотографию формы. ⚽"
     )
 
+
 async def main():
     await dp.start_polling(bot)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
