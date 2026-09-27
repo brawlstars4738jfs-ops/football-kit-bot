@@ -107,12 +107,13 @@ async def handle_photo(message: Message):
             caption="⚽ Готово! Новая форма!"
         )
 
-  except Exception as e:
-    print(f"Ошибка Gemini: {type(e).__name__}: {e}")
-    await message.answer(
-        "❌ Ошибка при создании фото. "
-        "Подробности в журнале Railway."
-    )
+  
+    except Exception as e:
+        print(f"Ошибка Gemini: {type(e).__name__}: {e}")
+        await message.answer(
+            "❌ Не получилось создать фото. "
+            "Посмотри ошибку в Railway."
+        )
 
 
 @dp.message()
